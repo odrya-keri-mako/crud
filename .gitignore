@@ -1,0 +1,32 @@
+# General
+.DS_Store
+Thumbs.db
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# Node/Angular
+node_modules/
+dist/
+build/
+.vite/
+.angular/
+.angular/cache/
+
+# Python
+__pycache__/
+.venv/
+venv/
+
+# PHP/Laravel
+/vendor/
+storage/
+bootstrap/cache/
+
+# Környezet
+.env
+.env.*
+!.env.example
+/temp/
