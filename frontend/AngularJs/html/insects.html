@@ -1,0 +1,427 @@
+<!-- Offcanvas -->
+<div class="offcanvas offcanvas-top" 
+     tabindex="-1" 
+     id="offcanvasTop">
+
+  <!-- Header -->
+  <div class="offcanvas-header justify-content-end pb-1">
+
+    <!-- Title -->
+    <h4 class="text-small-caps">Rovarok</h4>
+
+    <!-- Close button -->
+    <button type="button" 
+            class="btn-close text-reset" 
+            data-bs-dismiss="offcanvas" 
+            aria-label="Close"></button>
+  </div>
+
+  <!-- Body -->
+  <div class="offcanvas-body py-0">
+
+    <!-- New button/Filter -->
+    <div class="row justify-content-center">
+
+      <!-- New button -->
+      <div class="col-12 col-sm-4 col-md-3 mb-3">
+        <button type="button" 
+                class="btn btn-primary w-auto
+                       shadow-sm-bottom-end btn-click-effect"
+                data-bs-toggle="modal" 
+                data-bs-target="#formModal"
+                ng-click="methods.setModel()">
+          <i class="fa-solid fa-circle-plus me-1"></i>
+          Új tétel
+        </button>
+      </div>
+
+      <!-- Filter -->
+      <div class="col-12 col-sm-8 col-md-9 mb-3">
+        <form class="d-flex align-items-center">
+            <label for="filter" 
+                   class="form-label me-3 mt-1">
+              <i class="fa-solid fa-magnifying-glass fa-lg me-1"></i>
+              Keres:
+            </label>
+            <input type="search" 
+                   class="form-control" 
+                   id="filter"
+                   name="filter"
+                   ng-model="helper.filter"
+                   spellcheck="false"
+                   placeholder="keres"
+                   autocomplete="off"
+                   style="max-width:680px;">
+        </form>
+      </div>
+    </div>
+
+    <!-- Filter type -->
+    <div class="row justify-content-start">
+      <div class="col-12 col-sm-4 col-md-3 mb-3"></div>
+      <div class="col-12 col-sm-8 col-md-9">
+        <div class="form-label me-3 d-inline-block">
+          <i class="fa-brands fa-sourcetree me-1"></i>
+          Keresés forrása:
+        </div>
+        <div class="form-check me-3 mb-3 text-nowrap d-inline-block" 
+             ng-repeat="(k, v) in helper.keys track by $index"
+             ng-if="k !== 'id'">
+          <input class="form-check-input" 
+                type="radio" 
+                id="{{ k }}"
+                value="{{ k }}"
+                name="filterType"
+                ng-model="helper.filterType">
+          <label class="form-check-label" 
+                for="{{ k }}">
+            {{ v }}
+          </label>
+        </div>
+      </div>
+    </div>
+    <hr>
+
+    <!-- Order -->
+    <div class="row justify-content-start">
+      <div class="col-12 col-sm-4 col-md-3 mb-3 text-sm-end">
+        <i class="fa-solid fa-arrow-down-up-across-line fa-lg me-1"></i>
+        Rendezettség:
+      </div>
+      <div class="col-12 col-sm-8 col-md-9">
+        <div class="form-check me-3 mb-3 text-nowrap d-inline-block" 
+             ng-repeat="(k, v) in helper.keys track by $index">
+          <input class="form-check-input" 
+                 type="radio" 
+                 id="order_{{ k }}"
+                 value="{{ k }}"
+                 name="order"
+                 ng-model="helper.order"
+                 data-bs-dismiss="offcanvas">
+          <label class="form-check-label" 
+                for="order_{{ k }}">
+            {{ v }}
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="sticky-top px-3 py-1">
+  <div class="container-fluid">
+    <div class="row justify-content-end align-items-center">
+      <h4 class="d-inline-block w-auto mb-0 me-auto cursor-pointer text-small-caps"
+          ng-click="methods.scrollToTop()">
+        Rovarok
+      </h4>
+      <div class="w-auto p-0">
+        <span class="cursor-pointer p-2 rounded 
+                     flex-column btn-toggle-theme nav-item"
+              ng-click="methods.toggleTheme()">
+          <i class="fa-solid"
+             ng-class="{'fa-sun': theme === 'dark',
+                        'fa-moon': theme === 'light'}">
+          </i>
+        </span>
+      </div>
+      <div class="p-2 w-auto nav-item rounded">
+        <button class="navbar-toggler w-auto" 
+                type="button"
+                data-bs-toggle="offcanvas" 
+                data-bs-target="#offcanvasTop" 
+                aria-controls="offcanvasTop">
+          <i class="fa-solid fa-bars fa-lg"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- Main -->
+<main class="container">
+
+  <!-- Cards -->
+  <div class="row mt-1 mb-4 justify-content-center
+              row-cols-1 row-cols-md-2 row-cols-xl-3 g-3"
+       ng-if="insects.length">
+
+    <!-- Card -->
+    <div class="col scale-in"
+         ng-repeat="x in insects | orderBy: helper.order"
+         ng-if="!helper.filter || 
+                x[helper.filterType].toString().toLowerCase()
+                        .includes(helper.filter.toLowerCase())">
+      <div class="card shadow-sm-bottom-end">
+
+        <!-- Body -->
+        <div class="card-body">
+          <div class="row mb-3 justify-content-center align-items-center">
+
+            <!-- Image -->
+            <div class="col-6 bg-img bg-img-cover overflow-hidden border mb-2"
+                 style="width:200px;height:200px;"
+                 ng-style="{'background-image':
+                            'url(data:image/'+x.img_type+';base64,'+x.img+')'}">							
+            </div>
+
+            <!-- Name -->
+            <h5 class="col-6 card-title text-center">
+              {{ x.name }}
+            </h5>
+          </div>
+
+          <!-- Properties -->
+          <div class="row align-items-center" 
+               ng-repeat="(k, v) in helper.keys track by $index"
+               ng-if="k !== 'name' && k !== 'id'">
+            <h6 class="col-6 text-end m-0">
+              {{ v }}:
+            </h6>
+            <p class="col-6 text-start m-0">
+              {{ x[k] }}
+            </p>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="card-footer text-end py-3">
+
+          <!-- Update -->
+          <button type="button" 
+                  class="btn btn-warning mx-2 
+                        shadow-sm-bottom-end btn-click-effect"
+                  data-bs-toggle="modal" 
+                  data-bs-target="#formModal"
+                  ng-click="methods.setModel(x)">
+            <i class="fa-solid fa-file-pen me-1"></i>
+            Módosít
+          </button>
+
+          <!-- Delete -->
+          <button type="button" 
+                  class="btn btn-danger mx-2 
+                        shadow-sm-bottom-end btn-click-effect"
+                  ng-click="methods.delete(x.id)">
+            <i class="fa-solid fa-circle-minus me-1"></i>
+            Töröl
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty -->
+    <div class="row mt-3"
+         ng-if="!insects.length">
+      <h6 class="display-6 text-center">
+        Nincs adata!
+      </h6>
+    </div>
+  </div>
+</main>
+
+<!-- Modal -->
+<div class="modal fade" 
+     id="formModal" 
+     data-bs-backdrop="static" 
+     data-bs-keyboard="false" 
+     tabindex="-1" 
+     aria-labelledby="staticBackdropLabel" 
+     aria-hidden="true"
+     ng-bs-hide-modal>
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" 
+            id="staticBackdropLabel">
+          {{ helper.isNew ? 'Új tétel' : 'Módosít' }}
+        </h1>
+        <button type="button" 
+                class="btn-close btn-click-effect" 
+                data-bs-dismiss="modal" 
+                aria-label="Close"></button>
+      </div>
+
+      <!-- Body -->
+      <div class="modal-body">
+
+        <!-- Form -->
+        <form name="insectsForm">
+
+          <!-- Name -->
+          <div class="mb-3">
+            <label for="name" class="form-label">
+              Név:
+            </label>
+            <input type="search" 
+                  class="form-control" 
+                  id="name"
+                  name="name"
+                  ng-model="model.name"
+                  spellcheck="false"
+                  autocomplete="off"
+                  required>
+          </div>
+
+          <!-- Image -->
+          <div class="mb-3 d-flex align-items-center">
+            <input id="image"
+                   name="image" 
+                   type="file"
+                   accept="image/*"
+                   class="form-control form-control d-none"
+                   spellcheck="false" 
+                   autocomplete="off"
+                   ng-model="model.image"
+                   file-input="methods.image">
+            <label for="image">
+              <div class="bg-img bg-img-cover overflow-hidden border 
+                          d-flex align-items-center justify-content-center 
+                          cursor-pointer"
+                   style="width:100px;height:100px;"
+                   ng-style="{'background-image':
+                              'url(data:'+model.img_type+';base64,'+model.img+')'}">
+                <span class="text-center text-muted fs-sm"
+                      ng-show="!model.img">
+                  Max: 64KB
+                </span>							
+              </div>
+            </label>
+            <div class="d-inline-block ms-3 cursor-pointer fw-bold text-primary"
+                 ng-show="model.img"
+                 ng-click="methods.clearImg()">
+              x
+            </div>
+          </div>
+
+          <!-- Type -->
+          <div class="mb-3">
+            <label for="type" class="form-label">
+              Típus:
+            </label>
+            <select class="form-select"
+                    id="type"
+                    name="type"
+                    ng-model="model.type"
+                    required>
+              <option value="" 
+                      disabled hidden selected
+                      ng-if="helper.isNew">
+                -- kérem válasszon --
+              </option>
+              <option ng-repeat="x in helper.type track by $index"
+                      ng-selected="x == model.type"
+                      ng-value="x">
+                {{ x }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Metamorphosis -->
+          <div class="mb-3">
+            <label for="metamorphosis" class="form-label">
+              Metamorfózis:
+            </label>
+            <select class="form-select"
+                    id="metamorphosis"
+                    name="metamorphosis"
+                    ng-model="model.metamorphosis"
+                    required>
+              <option value="" 
+                      disabled hidden selected
+                      ng-if="helper.isNew">
+                -- kérem válasszon --
+              </option>
+              <option ng-repeat="x in helper.metamorphosis track by $index"
+                      ng-selected="x == model.metamorphosis"
+                      ng-value="x">
+                {{ x }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Role -->
+          <div class="mb-3">
+            <label for="role" class="form-label">
+              Szerep:
+            </label>
+            <select class="form-select"
+                    id="role"
+                    name="role"
+                    ng-model="model.role"
+                    required>
+              <option value="" 
+                      disabled hidden selected
+                      ng-if="helper.isNew">
+                -- kérem válasszon --
+              </option>
+              <option ng-repeat="x in helper.role track by $index"
+                      ng-selected="x == model.role"
+                      ng-value="x">
+                {{ x }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Active months -->
+          <div class="mb-3">
+            <label for="active_months" class="form-label">
+              Aktívitás hónap(ok):
+            </label>
+            <input type="search" 
+                  class="form-control" 
+                  id="active_months"
+                  name="active_months"
+                  ng-model="model.active_months"
+                  spellcheck="false"
+                  autocomplete="off"
+                  required>
+          </div>
+
+          <!-- Utility level -->
+          <div class="mb-5">
+            <label for="utility_level" class="form-label">
+              Hasznossági szint (1-5):
+            </label>
+            <input type="number" 
+                  class="form-control" 
+                  id="utility_level"
+                  name="utility_level"
+                  min="1"
+                  max="5"
+                  ng-model="model.utility_level"
+                  required>
+          </div>
+
+          <!-- Buttons -->
+          <div class="mb-3 text-end">
+
+            <!-- Cancel -->
+            <button type="button" 
+                    class="btn btn-secondary mx-1 
+                           shadow-sm-bottom-end btn-click-effect" 
+                    data-bs-dismiss="modal"
+                    ng-click="methods.cancel()">
+              <i class="fa-solid fa-circle-xmark me-1"></i>
+              Mégsem
+            </button>
+
+            <!-- Save -->
+            <button type="button" 
+                    class="btn btn-primary mx-1 
+                           shadow-sm-bottom-end btn-click-effect"
+                    data-bs-dismiss="modal"
+                    ng-disabled="insectsForm.$invalid"
+                    ng-click="helper.isNew ? methods.post() : methods.put()">
+              <i class="fa-solid fa-floppy-disk me-1"></i>
+              Mentés
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

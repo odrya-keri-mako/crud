@@ -1,0 +1,31 @@
+html, body {
+  scroll-behavior: smooth !important;
+}
+body[data-bs-theme="dark"] .nav-item:hover {
+  background-color:rgba(255,255,255,.2) !important;
+}
+body[data-bs-theme="light"] .nav-item:hover { 
+  background-color:rgba(0,0,0,.1) !important;
+}
+body[data-bs-theme="dark"] header {
+  background-color: black;
+}
+body[data-bs-theme="light"] header {
+  background-color: lightgray;
+}
+.btn-click-effect:not(.disabled):active {
+  animation:btnClickEffect 40ms;
+}
+@keyframes btnClickEffect {
+    0% 	{transform:none;}
+   50% 	{transform:scale(0.9);}
+  100% 	{transform:none;}
+}
+.scale-in {
+  animation: scaleIn .6s ease both;
+}
+@keyframes scaleIn {
+    0% 	{opacity:0;transform: scale(0); }
+   25% 	{opacity:0;transform: scale(0); }
+  100% 	{opacity:1;transform: scale(1); }
+}
