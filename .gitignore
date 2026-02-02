@@ -1,32 +1,93 @@
-# General
+# ----------------------------
+# OS / General
+# ----------------------------
 .DS_Store
 Thumbs.db
 *.log
+*.tmp
+*.swp
 
-# IDE
+# ----------------------------
+# IDE / Editor
+# ----------------------------
 .vscode/
 .idea/
+*.iml
 
-# Node/Angular
-node_modules/
-dist/
-build/
-.vite/
-.angular/
-.angular/cache/
-
-# Python
-__pycache__/
-.venv/
-venv/
-
-# PHP/Laravel
-/vendor/
-storage/
-bootstrap/cache/
-
-# Környezet
+# ----------------------------
+# Env files
+# ----------------------------
 .env
 .env.*
 !.env.example
+
+# ----------------------------
+# Node (general)
+# ----------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+.npm/
+.cache/
+
+# build outputs
+dist/
+build/
+out/
+coverage/
+*.tsbuildinfo
+
+# Vite / Vue / Svelte
+.vite/
+.vite-cache/
+
+# ----------------------------
+# React / Next.js
+# ----------------------------
+.next/
+.next/cache/
+.vercel/
+.nyc_output/
+
+# ----------------------------
+# Angular
+# ----------------------------
+.angular/
+.angular/cache/
+tmp/
+# Angular CLI
+/.sass-cache/
+
+# ----------------------------
+# Nuxt (ha lesz)
+# ----------------------------
+.nuxt/
+.output/
+
+# ----------------------------
+# SvelteKit
+# ----------------------------
+.svelte-kit/
+
+# ----------------------------
+# PHP / Laravel
+# ----------------------------
+/vendor/
+/storage/
+/bootstrap/cache/
+
+# ----------------------------
+# Python (ha lesz)
+# ----------------------------
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# ----------------------------
+# Local temp
+# ----------------------------
 /temp/

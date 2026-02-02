@@ -1,0 +1,370 @@
+[
+    {
+        "name": "Emlősök (mammals)",
+        "fields_recommendation": [
+            "name",
+            "latin_name",
+            "habitat (erdő/rét/város...)",
+            "diet (növényevő/ragadozó/mindenevő...)",
+            "avg_weight_kg",
+            "protected"
+        ],
+        "allocated": "Herczeg Máté János",
+        "checked_by_person": "Guvat Bence József",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 16
+    },
+    {
+        "name": "Madarak (birds)",
+        "fields_recommendation": [
+            "name",
+            "latin_name",
+            "migration (költöző/állandó)",
+            "nest_type (odú/fészek/föld)",
+            "avg_wingspan_cm",
+            "region (Afrika/Európa)"
+        ],
+        "allocated": "Guvat Bence József",
+        "checked_by_person": "Kriván Balázs",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 12
+    },
+    {
+        "name": "Hüllők (reptiles)",
+        "fields_recommendation": [
+            "name",
+            "venomous (igen/nem)",
+            "habitat",
+            "activity (nappali/éjszakai)",
+            "avg_length_cm",
+            "conservation_status (0-5)"
+        ],
+        "allocated": "Berta Barnabás",
+        "checked_by_person": "Bokor Richárd",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 9
+    },
+    {
+        "name": "Kétéltűek (amphibians)",
+        "fields_recommendation": [
+            "name",
+            "water_dependency (alacsony/közepes/magas)",
+            "habitat",
+            "breeding_season (tavasz/nyár)",
+            "avg_size_cm",
+            "protected"
+        ],
+        "allocated": "",
+        "checked_by_person": "",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": null
+    },
+    {
+        "name": "Édesvízi állatok (freshwater_animals)",
+        "fields_recommendation": [
+            "name",
+            "type (hal/rák/kagyló...)",
+            "feeding (ragadozó/növényevő,mindenevő...)",
+            "avg_length_cm",
+            "skeleton (porc,csontos,puhatestű...)",
+            "region"
+        ],
+        "allocated": "Kulcsár Tamás Ámon",
+        "checked_by_person": "Kis Marcell Zsombor",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 6
+    },
+    {
+        "name": "Sósvízi állatok (saltwater_animals)",
+        "fields_recommendation": [
+            "name",
+            "type (hal/rák/kagyló...)",
+            "feeding (ragadozó/növényevő,mindenevő...)",
+            "avg_length_cm",
+            "skeleton (porc,csontos,puhatestű...)",
+            "region"
+        ],
+        "allocated": "Tokai Ádám",
+        "checked_by_person": "Kulcsár Tamás Ámon",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 1
+    },
+    {
+        "name": "Rovarok (insects)",
+        "fields_recommendation": [
+            "name",
+            "order_name (lepke/bogár...)",
+            "metamorphosis (teljes/részleges)",
+            "role (beporzó/kártevő/lebontó...)",
+            "active_months",
+            "harmful_level (0-5)"
+        ],
+        "allocated": "",
+        "checked_by_person": "",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": null
+    },
+    {
+        "name": "Pókszabásúak (arachnids)",
+        "fields_recommendation": [
+            "name",
+            "type (pók/kullancs/skorpió...)",
+            "danger_level (0-5)",
+            "habitat",
+            "prey (rovar/kisállat...)",
+            "avg_size_mm"
+        ],
+        "allocated": "Kardos Zoltán",
+        "checked_by_person": "Sötét Ármin",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 13
+    },
+    {
+        "name": "Állatkerti állatok (zoo_animals)",
+        "fields_recommendation": [
+            "species",
+            "continent",
+            "diet",
+            "enclosure_type (terrárium/akvárium/kifutó...)",
+            "feeding_time",
+            "care_level (1-5)"
+        ],
+        "allocated": "Tóth László Gábor",
+        "checked_by_person": "Szabó Bence",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 7
+    },
+    {
+        "name": "Házi kedvencek (pets)",
+        "fields_recommendation": [
+            "type (kutya/macska/nyúl/...)",
+            "breed",
+            "avg_age_years",
+            "vaccinated (igen/nem)",
+            "avg_size",
+            "temperament (nyugodt/aktív...)"
+        ],
+        "allocated": "Dani Benedek",
+        "checked_by_person": "Suba Benjamin",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 17
+    },
+    {
+        "name": "Védett állatok (protected_animals)",
+        "fields_recommendation": [
+            "name",
+            "protection_type (védett/fokozottan védett...)",
+            "habitat",
+            "threat (élőhely/szennyezés/vadászat...)",
+            "population_trend (csökken/stagnál/nő...)",
+            "region"
+        ],
+        "allocated": "Miklós Martin",
+        "checked_by_person": "Tokai Ádám",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 20
+    },
+    {
+        "name": "Éjszakai állatok (nocturnal_animals)",
+        "fields_recommendation": [
+            "species",
+            "group (emlős/madár/...)",
+            "sense (hallás/szaglás/látás...)",
+            "habitat",
+            "avg_lifespan_years",
+            "diet"
+        ],
+        "allocated": "Kis Marcell Zsombor",
+        "checked_by_person": "Dani Benedek",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 3
+    },
+    {
+        "name": "Virágos növények (flowering_plants)",
+        "fields_recommendation": [
+            "name",
+            "latin_name",
+            "flower_color",
+            "flowering_season (tavasz/nyár/ősz)",
+            "sun_need (árnyék/félárnyék/nap)",
+            "avg_height_cm"
+        ],
+        "allocated": "Szalontai László",
+        "checked_by_person": "Döme Zoltán",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 18
+    },
+    {
+        "name": "Fák (trees)",
+        "fields_recommendation": [
+            "name",
+            "type (lombhullató/örökzöld)",
+            "leaf_shape (tű/karéjos/...)",
+            "growth_speed (lassú/közepes/gyors)",
+            "avg_height_m",
+            "soil_need (homok/vályog/agyar)"
+        ],
+        "allocated": "Döme Zoltán",
+        "checked_by_person": "Kis David Csaba",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 10
+    },
+    {
+        "name": "Cserjék (shrubs)",
+        "fields_recommendation": [
+            "name",
+            "berry (igen/nem)",
+            "pruning_season",
+            "frost_tolerance (1-5)",
+            "sun_need",
+            "avg_height_cm"
+        ],
+        "allocated": "Fodor Adrián László",
+        "checked_by_person": "Tóth László Gábor",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 5
+    },
+    {
+        "name": "Gyógynövények (medicinal_plants)",
+        "fields_recommendation": [
+            "name",
+            "used_part (levél/virág/gyökér)",
+            "use_case (tea/kenőcs/illóolaj)",
+            "harvest_season",
+            "contraindication_level (0-5)",
+            "sun_need"
+        ],
+        "allocated": "Bokor Richárd",
+        "checked_by_person": "Szalontai László",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 15
+    },
+    {
+        "name": "Mérgező növények (poisonous_plants)",
+        "fields_recommendation": [
+            "name",
+            "toxic_part",
+            "toxicity_level (1-5)",
+            "common_place (erdő/kert/lakás)",
+            "symptom",
+            "pet_risk (igen/nem)"
+        ],
+        "allocated": "Sötét Ármin",
+        "checked_by_person": "Herczeg Máté János",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 11
+    },
+    {
+        "name": "Szobanövények (houseplants)",
+        "fields_recommendation": [
+            "name",
+            "watering (ritka/közepes/gyakori)",
+            "light (árnyék/félárnyék/nap)",
+            "humidity_need (1-5)",
+            "pet_safe (igen/nem)",
+            "growth_rate"
+        ],
+        "allocated": "",
+        "checked_by_person": "",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": null
+    },
+    {
+        "name": "Konyhakerti növények (vegetables)",
+        "fields_recommendation": [
+            "name",
+            "season (tavasz/nyár/ősz)",
+            "watering",
+            "soil_need",
+            "days_to_harvest",
+            "common_pest"
+        ],
+        "allocated": "Kriván Balázs",
+        "checked_by_person": "Kardos Zoltán",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 4
+    },
+    {
+        "name": "Gyümölcsfák (fruit_trees)",
+        "fields_recommendation": [
+            "name",
+            "fruit_season",
+            "pollination (öntermékeny/idegen)",
+            "disease_resistance (1-5)",
+            "avg_height_m",
+            "watering"
+        ],
+        "allocated": "Kis David Csaba",
+        "checked_by_person": "Répa Norbert",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 19
+    },
+    {
+        "name": "Gombák (fungi)",
+        "fields_recommendation": [
+            "name",
+            "edible (igen/nem)",
+            "habitat",
+            "season",
+            "danger_level (0-5)",
+            "symbiosis (mikorrhiza/lebontó)"
+        ],
+        "allocated": "Répa Norbert",
+        "checked_by_person": "Miklós Martin",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 8
+    },
+    {
+        "name": "Vizi növényei (wetland_plants)",
+        "fields_recommendation": [
+            "name",
+            "avg_water_depth_cm",
+            "type (hínár/nád/mocsári)",
+            "season",
+            "role (szűrés/búvóhely)",
+            "protected"
+        ],
+        "allocated": "Suba Benjamin",
+        "checked_by_person": "Berta Barnabás",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 2
+    },
+    {
+        "name": "Kaktuszok (succulents)",
+        "fields_recommendation": [
+            "name",
+            "water_need (nagyon kevés/közepes)",
+            "light_need",
+            "cold_tolerance (1-5)",
+            "growth_rate",
+            "indoor_outdoor (bent/kint)"
+        ],
+        "allocated": "Szabó Bence",
+        "checked_by_person": "Fodor Adrián László",
+        "grade_suggestion": null,
+        "grade": null,
+        "assigned_order": 14
+    }
+]
