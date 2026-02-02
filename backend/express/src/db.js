@@ -1,3 +1,4 @@
+import "./env.js";
 import { createPool } from "mysql2/promise";
 
 const pool = createPool({
@@ -10,4 +11,5 @@ const pool = createPool({
   charset: "utf8mb4",
 });
 
+export const query = (sql, params = []) => pool.query(sql, params);
 export default pool;

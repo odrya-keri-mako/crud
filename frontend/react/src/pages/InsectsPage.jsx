@@ -79,6 +79,7 @@ export default function InsectsPage() {
   // --- bootstrap ref-ek ---
   const offcanvasRef = useRef(null);
   const modalRef = useRef(null);
+  const lastActiveRef = useRef(null);
 
   // --- theme ---
   useEffect(() => {
@@ -96,6 +97,7 @@ export default function InsectsPage() {
       alert("Sikertelen betöltés: nem elérhető szerver.");
     }
   };
+
 
   useEffect(() => {
     load();
@@ -122,10 +124,12 @@ export default function InsectsPage() {
 
   // Show modal
   const showModal = () => {
+    lastActiveRef.current = document.activeElement;
     const bs = getBootstrap();
     if (!bs || !modalRef.current) return;
     const inst = bs.Modal.getOrCreateInstance(modalRef.current, { 
-      backdrop: "static", keyboard: false 
+      backdrop: "static", 
+      keyboard: false 
     });
     inst.show();
   };
@@ -137,6 +141,33 @@ export default function InsectsPage() {
     const inst = bs.Modal.getOrCreateInstance(modalRef.current);
     inst.hide();
   };
+
+  useEffect(() => {
+    const el = modalRef.current;
+    if (!el) return;
+
+    const onHide = () => {
+      const active = document.activeElement;
+      if (active instanceof HTMLElement && el.contains(active)) {
+        active.blur();
+      }
+    };
+
+    const onHidden = () => {
+      const prev = lastActiveRef.current;
+      if (prev instanceof HTMLElement) {
+        prev.focus();
+      }
+    };
+
+    el.addEventListener("hide.bs.modal", onHide);
+    el.addEventListener("hidden.bs.modal", onHidden);
+
+    return () => {
+      el.removeEventListener("hide.bs.modal", onHide);
+      el.removeEventListener("hidden.bs.modal", onHidden);
+    };
+  }, []);
 
   // Sort + filter
   const filtered = useMemo(() => {
@@ -317,98 +348,98 @@ export default function InsectsPage() {
     <>
       {/* Offcanvas (Top) */}
       <div className="offcanvas offcanvas-top" 
-           tabIndex="-1" id="offcanvasTop" 
+           tabIndex="-1" 
+           id="offcanvasTop" 
            ref={offcanvasRef}>
+
+        {/* Header */}
         <div className="offcanvas-header justify-content-end pb-1">
           <h4 className="text-small-caps m-0">Rovarok</h4>
           <button type="button" 
                   className="btn-close text-reset" 
                   data-bs-dismiss="offcanvas" 
-                  aria-label="Close" />
+                  aria-label="Close"></button>
         </div>
 
+        {/* Body */}
         <div className="offcanvas-body py-0">
-          {/* Új + Filter */}
+
+          {/* New button/Filter */}
           <div className="row justify-content-center">
+
+            {/* New button */}
             <div className="col-12 col-sm-4 col-md-3 mb-3">
-              <button
-                type="button"
-                className="btn btn-primary w-auto shadow-sm"
-                onClick={setNew}
-                disabled={busy}
-              >
-                <i className="fa-solid fa-circle-plus me-1" />
+              <button type="button"
+                      className="btn btn-primary w-auto shadow-sm-bottom-end btn-click-effect"
+                      onClick={setNew}
+                      disabled={busy}>
+                <i className="fa-solid fa-circle-plus me-1"></i>
                 Új tétel
               </button>
             </div>
 
+            {/* Filter */}
             <div className="col-12 col-sm-8 col-md-9 mb-3">
               <form className="d-flex align-items-center">
                 <label htmlFor="filter" className="form-label me-3 mt-1">
-                  <i className="fa-solid fa-magnifying-glass fa-lg me-1" />
+                  <i className="fa-solid fa-magnifying-glass fa-lg me-1"></i>
                   Keres:
                 </label>
-                <input
-                  type="search"
-                  className="form-control"
-                  id="filter"
-                  value={filter}
-                  onChange={(e) => setFilter(e.target.value)}
-                  spellCheck={false}
-                  placeholder="keres"
-                  autoComplete="off"
-                  style={{ maxWidth: 680 }}
-                />
+                <input  type="search"
+                        className="form-control"
+                        id="filter"
+                        value={filter}
+                        onChange={(e) => setFilter(e.target.value)}
+                        spellCheck={false}
+                        placeholder="keres"
+                        autoComplete="off"
+                        style={{ maxWidth: 680 }}/>
               </form>
             </div>
           </div>
 
           {/* Filter type */}
           <div className="row justify-content-start">
-            <div className="col-12 col-sm-4 col-md-3 mb-3" />
+            <div className="col-12 col-sm-4 col-md-3 mb-3"></div>
             <div className="col-12 col-sm-8 col-md-9">
               <div className="form-label me-3 d-inline-block">
-                <i className="fa-brands fa-sourcetree me-1" />
+                <i className="fa-brands fa-sourcetree me-1"></i>
                 Keresés forrása:
               </div>
 
+
               {Object.entries(filterKeys).map(([k, v]) => (
                 <div className="form-check me-3 mb-3 text-nowrap d-inline-block" key={k}>
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    id={`ft_${k}`}
-                    value={k}
-                    name="filterType"
-                    checked={filterType === k}
-                    onChange={() => setFilterType(k)}
-                  />
+                  <input  className="form-check-input"
+                          type="radio"
+                          id={`ft_${k}`}
+                          value={k}
+                          name="filterType"
+                          checked={filterType === k}
+                          onChange={() => setFilterType(k)}/>
                   <label className="form-check-label" htmlFor={`ft_${k}`}>{v}</label>
                 </div>
               ))}
             </div>
           </div>
-
-          <hr />
+          <hr/>
 
           {/* Order */}
           <div className="row justify-content-start">
             <div className="col-12 col-sm-4 col-md-3 mb-3 text-sm-end">
-              <i className="fa-solid fa-arrow-down-up-across-line fa-lg me-1" />
+              <i className="fa-solid fa-arrow-down-up-across-line fa-lg me-1"></i>
               Rendezettség:
             </div>
             <div className="col-12 col-sm-8 col-md-9">
               {Object.entries(displayKeys).map(([k, v]) => (
                 <div className="form-check me-3 mb-3 text-nowrap d-inline-block" key={k}>
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    id={`ord_${k}`}
-                    value={k}
-                    name="order"
-                    checked={order === k}
-                    onChange={() => { setOrder(k); hideOffcanvas(); }}
-                  />
+                  <input  className="form-check-input"
+                          type="radio"
+                          id={`ord_${k}`}
+                          value={k}
+                          name="order"
+                          checked={order === k}
+                          onChange={() => { setOrder(k); hideOffcanvas(); }}/>
                   <label className="form-check-label" htmlFor={`ord_${k}`}>{v}</label>
                 </div>
               ))}
@@ -418,31 +449,33 @@ export default function InsectsPage() {
       </div>
 
       {/* Header */}
-      <header className="sticky-top px-3 py-1 border-bottom bg-body">
+      <header className="sticky-top px-3 py-1">
         <div className="container-fluid">
           <div className="row justify-content-end align-items-center">
-            <h4 className="d-inline-block w-auto mb-0 me-auto" style={{ cursor: "pointer" }}
+
+            {/* Title */}
+            <h4 className="d-inline-block w-auto mb-0 me-auto cursor-pointer text-small-caps"
                 onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}>
               Rovarok
             </h4>
 
+            {/* Toggle theme */}
             <div className="w-auto p-0">
-              <span
-                className="p-2 rounded nav-item"
-                style={{ cursor: "pointer", userSelect: "none" }}
-                onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
-                title="Téma váltás"
-              >
-                <i className={`fa-solid ${theme === "dark" ? "fa-sun" : "fa-moon"}`} />
+              <span className="p-2 rounded nav-item"
+                    style={{ cursor: "pointer", userSelect: "none" }}
+                    onClick={() => setTheme((t) => (t === "dark" ? "light" : "dark"))}
+                    title="Téma váltás">
+                <i className={`fa-solid ${theme === "dark" ? "fa-sun" : "fa-moon"}`}></i>
               </span>
             </div>
 
+            {/* Hamburger icon */}
             <div className="p-2 w-auto nav-item rounded">
               <button className="navbar-toggler w-auto" 
                       type="button" 
                       onClick={showOffcanvas} 
                       disabled={busy}>
-                <i className="fa-solid fa-bars fa-lg" />
+                <i className="fa-solid fa-bars fa-lg"></i>
               </button>
             </div>
           </div>
@@ -451,37 +484,46 @@ export default function InsectsPage() {
 
       {/* Main */}
       <main className="container">
+
         {/* Cards */}
         {filtered.length > 0 ? (
           <div className="row mt-2 mb-4 justify-content-center 
                           row-cols-1 row-cols-md-2 row-cols-xl-3 g-3">
+
+            {/* Card */}
             {filtered.map((x) => (
-              <div className="col" key={x.id}>
-                <div className="card shadow-sm">
+              <div className="col scale-in" 
+                   key={x.id}>
+                <div className="card shadow-sm-bottom-end">
+
+                  {/* Body */}
                   <div className="card-body">
                     <div className="row mb-3 justify-content-center align-items-center">
-                      <div
-                        className="col-6 overflow-hidden border mb-2"
-                        style={{
-                          width: 200,
-                          height: 200,
-                          backgroundSize: "cover",
-                          backgroundPosition: "center",
-                          backgroundImage: x.img ? 
-                                          `url(data:${x.img_type};base64,${x.img})` : 
-                                          "none",
-                          display: "flex",
-                          alignItems: "center",
-                          justifyContent: "center",
-                        }}
-                      >
+
+                      {/* Image */}
+                      <div  className="col-6 overflow-hidden border mb-2"
+                            style={{
+                              width: 200,
+                              height: 200,
+                              backgroundSize: "cover",
+                              backgroundPosition: "center",
+                              backgroundImage: x.img ? 
+                                              `url(data:${x.img_type};base64,${x.img})` : 
+                                              "none",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}>
                         {!x.img && <span className="text-muted">Nincs kép</span>}
                       </div>
 
-                      <h5 className="col-6 card-title text-center">{x.name}</h5>
+                      {/* Name */}
+                      <h5 className="col-6 card-title text-center">
+                        {x.name}
+                        </h5>
                     </div>
 
-                    {/* Properties – id/created_at/modified_at nincs megjelenítve */}
+                    {/* Properties */}
                     {Object.entries(displayKeys).map(([k, label]) => (
                       k !== "name" && (
                         <div className="row align-items-center" key={k}>
@@ -492,24 +534,24 @@ export default function InsectsPage() {
                     ))}
                   </div>
 
+                  {/* Buttons */}
                   <div className="card-footer text-end py-3">
-                    <button
-                      type="button"
-                      className="btn btn-warning mx-2 shadow-sm"
-                      onClick={() => setEdit(x)}
-                      disabled={busy}
-                    >
-                      <i className="fa-solid fa-file-pen me-1" />
+
+                    {/* Update */}
+                    <button type="button"
+                            className="btn btn-warning mx-2 shadow-sm-bottom-end btn-click-effect"
+                            onClick={() => setEdit(x)}
+                            disabled={busy}>
+                      <i className="fa-solid fa-file-pen me-1"></i>
                       Módosít
                     </button>
 
-                    <button
-                      type="button"
-                      className="btn btn-danger mx-2 shadow-sm"
-                      onClick={() => onDelete(x.id)}
-                      disabled={busy}
-                    >
-                      <i className="fa-solid fa-circle-minus me-1" />
+                    {/* Delete */}
+                    <button type="button"
+                            className="btn btn-danger mx-2 shadow-sm-bottom-end btn-click-effect"
+                            onClick={() => onDelete(x.id)}
+                            disabled={busy}>
+                      <i className="fa-solid fa-circle-minus me-1"></i>
                       Töröl
                     </button>
                   </div>
@@ -518,6 +560,8 @@ export default function InsectsPage() {
             ))}
           </div>
         ) : (
+
+          // Empty
           <div className="row mt-4">
             <h6 className="display-6 text-center">Nincs adat!</h6>
           </div>
@@ -532,6 +576,8 @@ export default function InsectsPage() {
            ref={modalRef}>
         <div className="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div className="modal-content">
+
+            {/* Header */}
             <div className="modal-header">
               <h1 className="modal-title fs-5">
                 {isNew ? "Új tétel" : "Módosít"}
@@ -542,64 +588,59 @@ export default function InsectsPage() {
                       aria-label="Close" />
             </div>
 
+            {/* Body */}
             <div className="modal-body">
+
               {/* Form */}
               <form onSubmit={(e) => e.preventDefault()}>
+
                 {/* Name */}
                 <div className="mb-3">
                   <label htmlFor="name" className="form-label">Név:</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="name"
-                    value={model.name}
-                    onChange={(e) => setModel((m) => ({ ...m, name: e.target.value }))}
-                    autoComplete="off"
-                    spellCheck={false}
-                    required
-                  />
+                  <input  type="text"
+                          className="form-control"
+                          id="name"
+                          value={model.name}
+                          onChange={(e) => setModel((m) => ({ ...m, name: e.target.value }))}
+                          autoComplete="off"
+                          spellCheck={false}
+                          required/>
                 </div>
 
                 {/* Image */}
                 <div className="mb-3 d-flex align-items-center">
-                  <input
-                    id="image"
-                    type="file"
-                    accept="image/*"
-                    className="form-control d-none"
-                    onChange={(e) => onImagePick(e.target.files?.[0])}
-                  />
+                  <input  id="image"
+                          type="file"
+                          accept="image/*"
+                          className="form-control d-none"
+                          onChange={(e) => onImagePick(e.target.files?.[0])}/>
                   <label htmlFor="image" style={{ margin: 0 }}>
-                    <div
-                      className="overflow-hidden border d-flex 
-                                 align-items-center justify-content-center"
-                      style={{
-                        width: 100,
-                        height: 100,
-                        cursor: busy ? "not-allowed" : "pointer",
-                        backgroundSize: "cover",
-                        backgroundPosition: "center",
-                        backgroundImage: imgPreview ? `url(${imgPreview})` : "none",
-                        opacity: busy ? 0.6 : 1,
-                      }}
-                      title="Kép kiválasztása"
-                    >
+                    <div  className="overflow-hidden border d-flex 
+                                     align-items-center justify-content-center"
+                          style={{
+                            width: 100,
+                            height: 100,
+                            cursor: busy ? "not-allowed" : "pointer",
+                            backgroundSize: "cover",
+                            backgroundPosition: "center",
+                            backgroundImage: imgPreview ? `url(${imgPreview})` : "none",
+                            opacity: busy ? 0.6 : 1,
+                          }}
+                          title="Kép kiválasztása">
                       {
                         !model.img && 
                         <span className="text-center text-muted small">
                           Max: 64KB
-                          </span>
+                        </span>
                       }
                     </div>
                   </label>
 
                   {model.img && (
-                    <div
-                      className="ms-3 fw-bold text-primary"
-                      style={{ cursor: busy ? "not-allowed" : "pointer" }}
-                      onClick={() => !busy && clearImage()}
-                      title="Kép törlése"
-                    >
+                    <div  className="ms-3 fw-bold text-primary"
+                          style={{ cursor: busy ? "not-allowed" : "pointer" }}
+                          onClick={() => !busy && clearImage()}
+                          title="Kép törlése">
                       x
                     </div>
                   )}
@@ -608,14 +649,12 @@ export default function InsectsPage() {
                 {/* Type */}
                 <div className="mb-3">
                   <label htmlFor="type" className="form-label">Típus:</label>
-                  <select
-                    className="form-select"
-                    id="type"
-                    value={model.type}
-                    onChange={(e) => setModel((m) => ({ ...m, type: e.target.value }))}
-                    required
-                  >
-                    <option value="" disabled>-- kérem válasszon --</option>
+                  <select className="form-select"
+                          id="type"
+                          value={model.type}
+                          onChange={(e) => setModel((m) => ({ ...m, type: e.target.value }))}
+                          required>
+                    <option value="" disabled hidden selected>-- kérem válasszon --</option>
                     {options.type.map((x) => <option key={x} value={x}>{x}</option>)}
                   </select>
                 </div>
@@ -623,14 +662,14 @@ export default function InsectsPage() {
                 {/* Metamorphosis */}
                 <div className="mb-3">
                   <label htmlFor="metamorphosis" className="form-label">Metamorfózis:</label>
-                  <select
-                    className="form-select"
-                    id="metamorphosis"
-                    value={model.metamorphosis}
-                    onChange={(e) => setModel((m) => ({ ...m, metamorphosis: e.target.value }))}
-                    required
-                  >
-                    <option value="" disabled>-- kérem válasszon --</option>
+                  <select className="form-select"
+                          id="metamorphosis"
+                          value={model.metamorphosis}
+                          onChange={(e) => setModel((m) => ({
+                            ...m, metamorphosis: e.target.value 
+                          }))}
+                          required>
+                    <option value="" disabled hidden selected>-- kérem válasszon --</option>
                     {options.metamorphosis.map((x) => <option key={x} value={x}>{x}</option>)}
                   </select>
                 </div>
@@ -638,14 +677,12 @@ export default function InsectsPage() {
                 {/* Role */}
                 <div className="mb-3">
                   <label htmlFor="role" className="form-label">Szerep:</label>
-                  <select
-                    className="form-select"
-                    id="role"
-                    value={model.role}
-                    onChange={(e) => setModel((m) => ({ ...m, role: e.target.value }))}
-                    required
-                  >
-                    <option value="" disabled>-- kérem válasszon --</option>
+                  <select className="form-select"
+                          id="role"
+                          value={model.role}
+                          onChange={(e) => setModel((m) => ({ ...m, role: e.target.value }))}
+                          required>
+                    <option value="" disabled hidden selected>-- kérem válasszon --</option>
                     {options.role.map((x) => <option key={x} value={x}>{x}</option>)}
                   </select>
                 </div>
@@ -656,16 +693,16 @@ export default function InsectsPage() {
                          className="form-label">
                     Aktívitás hónap(ok):
                   </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="active_months"
-                    value={model.active_months}
-                    onChange={(e) => setModel((m) => ({ ...m, active_months: e.target.value }))}
-                    autoComplete="off"
-                    spellCheck={false}
-                    required
-                  />
+                  <input  type="text"
+                          className="form-control"
+                          id="active_months"
+                          value={model.active_months}
+                          onChange={(e) => setModel((m) => ({ 
+                            ...m, active_months: e.target.value 
+                          }))}
+                          autoComplete="off"
+                          spellCheck={false}
+                          required/>
                 </div>
 
                 {/* Utility level */}
@@ -674,37 +711,36 @@ export default function InsectsPage() {
                          className="form-label">
                     Hasznossági szint (1-5):
                   </label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    id="utility_level"
-                    min="1"
-                    max="5"
-                    value={model.utility_level}
-                    onChange={(e) => setModel((m) => ({ ...m, utility_level: e.target.value }))}
-                    required
-                  />
+                  <input  type="number"
+                          className="form-control"
+                          id="utility_level"
+                          min="1"
+                          max="5"
+                          value={model.utility_level}
+                          onChange={(e) => setModel((m) => ({ 
+                            ...m, utility_level: e.target.value 
+                          }))}
+                          required/>
                 </div>
 
                 {/* Buttons */}
                 <div className="text-end">
-                  <button
-                    type="button"
-                    className="btn btn-secondary mx-1 shadow-sm"
-                    onClick={onCancel}
-                    disabled={busy}
-                  >
-                    <i className="fa-solid fa-circle-xmark me-1" />
+
+                  {/* Cancel */}
+                  <button type="button"
+                          className="btn btn-secondary mx-1 shadow-sm-bottom-end btn-click-effect"
+                          onClick={onCancel}
+                          disabled={busy}>
+                    <i className="fa-solid fa-circle-xmark me-1"></i>
                     Mégsem
                   </button>
 
-                  <button
-                    type="button"
-                    className="btn btn-primary mx-1 shadow-sm"
-                    onClick={onSave}
-                    disabled={busy}
-                  >
-                    <i className="fa-solid fa-floppy-disk me-1" />
+                  {/* Save */}
+                  <button type="button"
+                          className="btn btn-primary mx-1 shadow-sm-bottom-end btn-click-effect"
+                          onClick={onSave}
+                          disabled={busy}>
+                    <i className="fa-solid fa-floppy-disk me-1"></i>
                     Mentés
                   </button>
                 </div>

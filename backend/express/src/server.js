@@ -1,14 +1,10 @@
-require("dotenv").config();
-
-import express, { json } from "express";
+import express from "express";
 import cors from "cors";
-
-import insectsRoutes from "./routes/insects.routes";
+import insectsRoutes from "./routes/insects.routes.js";
 
 const app = express();
-
 app.use(cors({ origin: true }));
-app.use(json({ limit: "2mb" })); 
+app.use(express.json({ limit: "2mb" }));
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));
 app.use("/api/insects", insectsRoutes);

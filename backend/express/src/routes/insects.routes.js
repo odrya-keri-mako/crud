@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { query } from "../db";
-import { validateInsectPayload } from "../validate";
+import { query } from "../db.js";
+import { validateInsectPayload } from "../validate.js";
 
 const router = Router();
 
@@ -23,13 +23,19 @@ router.get("/", async (req, res) => {
               metamorphosis, 
               role, 
               active_months, 
-              utility_level
+              utility_level,
+              created_at, 
+              modified_at
          FROM insects
         ORDER BY id ASC`
     );
     res.json({ ok: true, data: rows.map(mapRow) });
   } catch (e) {
-    res.status(500).json({ ok: false, error: "DB read error" });
+    console.error("DB READ ERROR:", e.code, e.message);
+    res.status(500).json({
+      ok: false,
+      error: e.code ? `${e.code}: ${e.message}` : String(e.message || e),
+    });
   }
 });
 
@@ -78,7 +84,11 @@ router.post("/", async (req, res) => {
 
     res.json({ ok: true, data: { id: result.insertId } });
   } catch (e) {
-    res.status(500).json({ ok: false, error: "DB insert error" });
+    console.error("DB READ ERROR:", e.code, e.message);
+    res.status(500).json({
+      ok: false,
+      error: e.code ? `${e.code}: ${e.message}` : String(e.message || e),
+    });
   }
 });
 
@@ -125,7 +135,11 @@ router.put("/:id", async (req, res) => {
 
     res.json({ ok: true, data: { affectedRows: result.affectedRows } });
   } catch (e) {
-    res.status(500).json({ ok: false, error: "DB update error" });
+    console.error("DB READ ERROR:", e.code, e.message);
+    res.status(500).json({
+      ok: false,
+      error: e.code ? `${e.code}: ${e.message}` : String(e.message || e),
+    });
   }
 });
 
@@ -140,7 +154,11 @@ router.delete("/:id", async (req, res) => {
     const [result] = await query(`DELETE FROM insects WHERE id=?`, [id]);
     res.json({ ok: true, data: { affectedRows: result.affectedRows } });
   } catch (e) {
-    res.status(500).json({ ok: false, error: "DB delete error" });
+    console.error("DB READ ERROR:", e.code, e.message);
+    res.status(500).json({
+      ok: false,
+      error: e.code ? `${e.code}: ${e.message}` : String(e.message || e),
+    });
   }
 });
 

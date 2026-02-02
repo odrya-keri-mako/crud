@@ -18,18 +18,10 @@ function base64ByteLength(base64) {
   return Math.floor((s.length * 3) / 4) - padding;
 }
 
-function validateInsectPayload(body, { requireAll = true } = {}) {
+export function validateInsectPayload(body, { requireAll = true } = {}) {
   const errors = [];
-
   const {
-    name,
-    img,
-    img_type,
-    type,
-    metamorphosis,
-    role,
-    active_months,
-    utility_level,
+    name, img, img_type, type, metamorphosis, role, active_months, utility_level,
   } = body || {};
 
   const need = (field) => requireAll || body[field] !== undefined;
@@ -59,5 +51,3 @@ function validateInsectPayload(body, { requireAll = true } = {}) {
 
   return errors;
 }
-
-export default { validateInsectPayload };
