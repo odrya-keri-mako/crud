@@ -8,10 +8,14 @@ body[data-bs-theme="light"] .nav-item:hover {
   background-color:rgba(0,0,0,.1) !important;
 }
 body[data-bs-theme="dark"] header {
-  background-color: black;
+  background-color: black !important;
 }
 body[data-bs-theme="light"] header {
-  background-color: lightgray;
+  background-color: lightgray !important;
+}
+.offcanvas {
+  height: fit-content !important;
+  max-height: 75% !important;
 }
 .btn-click-effect:not(.disabled):active {
   animation:btnClickEffect 40ms;

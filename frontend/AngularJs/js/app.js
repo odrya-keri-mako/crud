@@ -74,7 +74,7 @@
               metamorphosis: null,
               role: null,
               active_months: null,
-              utility_level: null
+              utility_level: 1
             },
             
             // Típus

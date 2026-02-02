@@ -14,7 +14,7 @@ const emptyModel = {
   metamorphosis: "",
   role: "",
   active_months: "",
-  utility_level: 1,
+  utility_level: 1
 };
 
 // Set options
@@ -28,7 +28,7 @@ const options = {
     "Egyenesszárnyúak",
     "Szitakötők",
     "Botsáskák",
-    "Csótányok",
+    "Csótányok"
   ],
   metamorphosis: [
     "Nincs", 
@@ -41,7 +41,8 @@ const options = {
     "Tápláléklánc", 
     "Kártevőirtás", 
     "Talajképzés", 
-    "Kártevő"],
+    "Kártevő"
+  ]
 };
 
 // Set field view
@@ -344,6 +345,8 @@ export default function InsectsPage() {
     ? `data:${model.img_type};base64,${model.img}`
     : null;
 
+  const isFormValid = !validateModel(model);
+
   return (
     <>
       {/* Offcanvas (Top) */}
@@ -354,9 +357,15 @@ export default function InsectsPage() {
 
         {/* Header */}
         <div className="offcanvas-header justify-content-end pb-1">
-          <h4 className="text-small-caps m-0">Rovarok</h4>
+
+          {/* Title */}
+          <h4 className="text-small-caps m-0">
+            Rovarok
+          </h4>
+
+          {/* Close button */}
           <button type="button" 
-                  className="btn-close text-reset" 
+                  className="btn-close text-reset me-3" 
                   data-bs-dismiss="offcanvas" 
                   aria-label="Close"></button>
         </div>
@@ -654,7 +663,7 @@ export default function InsectsPage() {
                           value={model.type}
                           onChange={(e) => setModel((m) => ({ ...m, type: e.target.value }))}
                           required>
-                    <option value="" disabled hidden selected>-- kérem válasszon --</option>
+                    <option value="" disabled hidden>-- kérem válasszon --</option>
                     {options.type.map((x) => <option key={x} value={x}>{x}</option>)}
                   </select>
                 </div>
@@ -669,7 +678,7 @@ export default function InsectsPage() {
                             ...m, metamorphosis: e.target.value 
                           }))}
                           required>
-                    <option value="" disabled hidden selected>-- kérem válasszon --</option>
+                    <option value="" disabled hidden>-- kérem válasszon --</option>
                     {options.metamorphosis.map((x) => <option key={x} value={x}>{x}</option>)}
                   </select>
                 </div>
@@ -682,7 +691,7 @@ export default function InsectsPage() {
                           value={model.role}
                           onChange={(e) => setModel((m) => ({ ...m, role: e.target.value }))}
                           required>
-                    <option value="" disabled hidden selected>-- kérem válasszon --</option>
+                    <option value="" disabled hidden>-- kérem válasszon --</option>
                     {options.role.map((x) => <option key={x} value={x}>{x}</option>)}
                   </select>
                 </div>
@@ -739,7 +748,7 @@ export default function InsectsPage() {
                   <button type="button"
                           className="btn btn-primary mx-1 shadow-sm-bottom-end btn-click-effect"
                           onClick={onSave}
-                          disabled={busy}>
+                          disabled={busy || !isFormValid}>
                     <i className="fa-solid fa-floppy-disk me-1"></i>
                     Mentés
                   </button>

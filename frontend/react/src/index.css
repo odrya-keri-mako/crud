@@ -26,6 +26,10 @@ body[data-bs-theme="light"] header {
 .shadow-sm-bottom-end {
   box-shadow: 0.3rem 0.3rem 0.3rem 0 rgba(0,0,0,0.3);
 }
+.offcanvas {
+  height: fit-content !important;
+  max-height: 75% !important;
+}
 .btn-click-effect:not(.disabled):active {
   animation:btnClickEffect 40ms;
 }
