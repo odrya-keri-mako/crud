@@ -1,26 +1,24 @@
 # CRUD
 
+### Project folders
 ```bash
 crud  
 ├─── frontend
 │   ├─── angularJs
-│   ├─── angular
-│   ├─── vue
 │   └─── react
 │   ...
 │   
 ├─── backend
-│   ├─── laravel
-│   └─── express
+│   ├─── db
+│   ├─── express
+│   └─── PHP
 │   ...
 │ 
 ├─── docs
-│   ├─── laravel
-│   └─── README.md
-│   ...
 │
 ├─ .gitignore 
-└─ README.md 
+├─ README.md 
+└─ start.bat 
 ```
 
 - angularJs
