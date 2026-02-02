@@ -21,7 +21,14 @@ function base64ByteLength(base64) {
 export function validateInsectPayload(body, { requireAll = true } = {}) {
   const errors = [];
   const {
-    name, img, img_type, type, metamorphosis, role, active_months, utility_level,
+    name, 
+    img, 
+    img_type, 
+    type, 
+    metamorphosis, 
+    role, 
+    active_months, 
+    utility_level,
   } = body || {};
 
   const need = (field) => requireAll || body[field] !== undefined;

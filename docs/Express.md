@@ -1,4 +1,28 @@
-# Express
+# Express – CRUD (MySQL + REST API)
+
+#### Goal
+- `GET    /api/insects`       → List insects
+- `POST   /api/insects`       → Add new insect
+- `PUT    /api/insects/:id`   → Modify insect
+- `DELETE /api/insects/:id`   → Delete insect
+
+#### Folder structure (recommended)
+```bash
+crud
+└─── backend
+      ├─── db
+      │     └─── plants_and_animals.sql
+      └─── express
+            ├─── src
+            │     ├─── routes
+            │     │     └─── insects.routes.js
+            │     ├─── db.js
+            │     ├─── env.js
+            │     ├─── server.js
+            │     └─── validate.js
+            ├─── .env
+            └─── package.json
+```
 
 #### Create aplication
 ```bash
@@ -6,7 +30,7 @@ cd backend
 mkdir express
 cd express
 npm init -y
-npm i express cors mysql2
+npm i express cors mysql2 dotenv
 npm i -D nodemon
 ```
 
@@ -18,7 +42,7 @@ touch .env
 #### Set environment (backend/express/.env)
 ```ini
 PORT=3001
-DB_HOST=localhost
+DB_HOST=127.0.0.1
 DB_USER=root
 DB_PASS=
 DB_NAME=plants_and_animals
@@ -38,9 +62,10 @@ DB_PORT=3306
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "cors": "^2.8.6",
+    "dotenv": "^17.2.3",
     "express": "^5.2.1",
     "mysql2": "^3.16.2"
   },
@@ -50,15 +75,33 @@ DB_PORT=3306
 }
 ```
 
-#### Create databas connection (backend/express/src/db.js)
+
+
+#### Create sources directory (backend/express/src)
 ```bash
 mkdir src
 cd src
+```
+
+#### Create environment (backend/express/src/env.js)
+```bash
+touch env.js
+```
+
+#### Replace (backend/express/src/env.js)
+```js
+import dotenv from "dotenv";
+dotenv.config();
+```
+
+#### Create database connection (backend/express/src/db.js)
+```bash
 touch db.js
 ```
 
 #### Replace (backend/express/src/db.js)
 ```js
+import "./env.js";
 import { createPool } from "mysql2/promise";
 
 const pool = createPool({
@@ -71,6 +114,7 @@ const pool = createPool({
   charset: "utf8mb4",
 });
 
+export const query = (sql, params = []) => pool.query(sql, params);
 export default pool;
 ```
 
@@ -101,17 +145,16 @@ function base64ByteLength(base64) {
   return Math.floor((s.length * 3) / 4) - padding;
 }
 
-function validateInsectPayload(body, { requireAll = true } = {}) {
+export function validateInsectPayload(body, { requireAll = true } = {}) {
   const errors = [];
-
   const {
-    name,
-    img,
-    img_type,
-    type,
-    metamorphosis,
-    role,
-    active_months,
+    name, 
+    img, 
+    img_type, 
+    type, 
+    metamorphosis, 
+    role, 
+    active_months, 
     utility_level,
   } = body || {};
 
@@ -142,8 +185,6 @@ function validateInsectPayload(body, { requireAll = true } = {}) {
 
   return errors;
 }
-
-export default { validateInsectPayload };
 ```
 
 #### Create routes (backend/express/src/routes/insects.routes.js)
@@ -156,8 +197,8 @@ touch insects.routes.js
 #### Replace (backend/express/src/routes/insects.routes.js)
 ```js
 import { Router } from "express";
-import { query } from "../db";
-import { validateInsectPayload } from "../validate";
+import { query } from "../db.js";
+import { validateInsectPayload } from "../validate.js";
 
 const router = Router();
 
@@ -180,13 +221,19 @@ router.get("/", async (req, res) => {
               metamorphosis, 
               role, 
               active_months, 
-              utility_level
+              utility_level,
+              created_at, 
+              modified_at
          FROM insects
         ORDER BY id ASC`
     );
     res.json({ ok: true, data: rows.map(mapRow) });
   } catch (e) {
-    res.status(500).json({ ok: false, error: "DB read error" });
+    console.error("DB READ ERROR:", e.code, e.message);
+    res.status(500).json({
+      ok: false,
+      error: e.code ? `${e.code}: ${e.message}` : String(e.message || e),
+    });
   }
 });
 
@@ -235,7 +282,11 @@ router.post("/", async (req, res) => {
 
     res.json({ ok: true, data: { id: result.insertId } });
   } catch (e) {
-    res.status(500).json({ ok: false, error: "DB insert error" });
+    console.error("DB READ ERROR:", e.code, e.message);
+    res.status(500).json({
+      ok: false,
+      error: e.code ? `${e.code}: ${e.message}` : String(e.message || e),
+    });
   }
 });
 
@@ -282,7 +333,11 @@ router.put("/:id", async (req, res) => {
 
     res.json({ ok: true, data: { affectedRows: result.affectedRows } });
   } catch (e) {
-    res.status(500).json({ ok: false, error: "DB update error" });
+    console.error("DB READ ERROR:", e.code, e.message);
+    res.status(500).json({
+      ok: false,
+      error: e.code ? `${e.code}: ${e.message}` : String(e.message || e),
+    });
   }
 });
 
@@ -297,7 +352,11 @@ router.delete("/:id", async (req, res) => {
     const [result] = await query(`DELETE FROM insects WHERE id=?`, [id]);
     res.json({ ok: true, data: { affectedRows: result.affectedRows } });
   } catch (e) {
-    res.status(500).json({ ok: false, error: "DB delete error" });
+    console.error("DB READ ERROR:", e.code, e.message);
+    res.status(500).json({
+      ok: false,
+      error: e.code ? `${e.code}: ${e.message}` : String(e.message || e),
+    });
   }
 });
 
@@ -312,17 +371,13 @@ touch server.js
 
 #### Replace (backend/express/src/server.js)
 ```js
-require("dotenv").config();
-
-import express, { json } from "express";
+import express from "express";
 import cors from "cors";
-
-import insectsRoutes from "./routes/insects.routes";
+import insectsRoutes from "./routes/insects.routes.js";
 
 const app = express();
-
 app.use(cors({ origin: true }));
-app.use(json({ limit: "2mb" })); 
+app.use(express.json({ limit: "2mb" }));
 
 app.get("/api/health", (req, res) => res.json({ ok: true }));
 app.use("/api/insects", insectsRoutes);
