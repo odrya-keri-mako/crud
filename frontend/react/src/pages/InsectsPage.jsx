@@ -47,6 +47,7 @@ const options = {
 
 // Set field view
 const displayKeys = {
+  id: "Azonosító",
   name: "Név",
   type: "Típus",
   metamorphosis: "Metamorfózis",
@@ -75,14 +76,14 @@ export default function InsectsPage() {
 
   const [filter, setFilter] = useState("");
   const [filterType, setFilterType] = useState("name");
-  const [order, setOrder] = useState("name");
+  const [order, setOrder] = useState("id");
 
   // --- bootstrap ref-ek ---
   const offcanvasRef = useRef(null);
   const modalRef = useRef(null);
   const lastActiveRef = useRef(null);
 
-  // --- theme ---
+  // Theme 
   useEffect(() => {
     document.body.setAttribute("data-bs-theme", theme);
     localStorage.setItem("crud-theme", theme);
@@ -534,7 +535,7 @@ export default function InsectsPage() {
 
                     {/* Properties */}
                     {Object.entries(displayKeys).map(([k, label]) => (
-                      k !== "name" && (
+                      k !== "name" && k !== "id" && (
                         <div className="row align-items-center" key={k}>
                           <h6 className="col-6 text-end m-0">{label}:</h6>
                           <p className="col-6 text-start m-0">{String(x?.[k] ?? "")}</p>
